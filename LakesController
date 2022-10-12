@@ -1,0 +1,110 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\lakes;
+
+class LakesController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $lakes = Lakes::all();
+        return view('lakes.index',compact('lakes'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $lakes = \App\Lakes::all();
+        return view('lakes.create',compact('lakes'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request,[
+            'nama_layanan' => 'required',
+    	]);
+
+        Lakes::create($request->all()); 
+
+        return redirect()->route('lakes.index')->with('Data ditambah','Data berhasil ditambah');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $lakes = Lakes::where('id_layanankesehatan',$id)->first();     
+        return view('lakes.show',compact('lakes'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $lakes = Lakes::where('id_layanankesehatan',$id)->first(); 
+        return view('lakes.edit',compact('lakes'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request,[
+            'nama_layanan' => 'required',
+        ]);
+
+        Lakes::where('id_layanankesehatan',$id)->update([
+            'nama_layanan' => $request->nama_layanan,
+        ]);
+        
+        return redirect()->route('lakes.index')->with('Data diedit','Data berhasil diedit');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        Lakes::where('id_layanankesehatan',$id)->delete(); 
+        return redirect()->route('lakes.index')->with('Data dihapus','Data berhasil dihapus');
+    }
+
+    public function cetakLakes()
+    {
+        $cetaklakes = Lakes::all();
+        return view('lakes.cetaklakes',compact('cetaklakes'));
+    }
+}
