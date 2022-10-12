@@ -1,0 +1,17 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class lakes extends Model
+{
+    public $timestamps = false;
+    protected $table = 'lakes';
+    protected $fillable = ['nama_layanan'];
+
+    public function rutin()
+    {
+        return $this->hasMany('App\rutin');
+    }
+}
